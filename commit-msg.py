@@ -12,12 +12,11 @@ REQUIRED_REGEXPS = [
     'KK-\d+'
 ]
 
-
 def main():
     file_path = sys.argv[1]
     with codecs.open(file_path, encoding="utf-8") as f:
         lines = map(lambda x: x.strip(), f)
-        non_comment_lines = filter(lambda x: x and [0] != '#', lines)
+        non_comment_lines = filter(lambda x: x and x[0] != '#', lines)
         commit = "".join(non_comment_lines)
         if MIN_COMMIT_LENGTH and len(commit) < MIN_COMMIT_LENGTH:
             logging.error("Commit message to short")
