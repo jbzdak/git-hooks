@@ -43,12 +43,12 @@ UPDATE_CAN_GUESS_GIT_WORK_TREE = get_fallback_cp(
     method=ConfigParser.getboolean)
 
 
-def _get_remotes_to_update():
-    initial = get_fallback_cp(cp, "update", 'remotes-to-update', 'origin,')
+def get_comma_separated_list(section, key, fallback):
+    initial = get_fallback_cp(cp, section, key, fallback)
     splitted = initial.split(',')
     return [s for s in splitted if len(s.strip()) > 0]
 
-POST_COMMIT_REMOTES_TO_UPDATE = _get_remotes_to_update()
+POST_COMMIT_REMOTES_TO_UPDATE = get_comma_separated_list("update", 'remotes-to-update', 'origin,')
 
 COMMIT_MSG_MIN_LENGTH = get_fallback_cp(cp, 'commit-msg', 'min-commit-length',
                                         fallback=15, method=ConfigParser.getint)
@@ -56,3 +56,4 @@ COMMIT_MSG_MIN_LENGTH = get_fallback_cp(cp, 'commit-msg', 'min-commit-length',
 COMMIT_MSG_REQUIRED_REGEXPS = json.loads(get_fallback_cp(
     cp, 'commit-msg', 'required-regexps', fallback='[]'))
 
+PRE_COMMMIT_FORBIDDEN_BRANCHES = get_comma_separated_list("pre-commit", 'forbid-commits-to', ',')
