@@ -6,15 +6,13 @@ import os, sys, subprocess, logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-REMOTES_TO_UPDATE = ['origin']
-
-AUTOMERGE_SUFFIX = "-automerge"
+from _hook_config import SHARED_AUTOMERGE_SUFFIX, POST_COMMIT_REMOTES_TO_UPDATE
 
 
 def branch_mapper(remote, local_branch):
-    if remote not in REMOTES_TO_UPDATE:
+    if remote not in POST_COMMIT_REMOTES_TO_UPDATE:
         return None
-    return local_branch + AUTOMERGE_SUFFIX
+    return local_branch + SHARED_AUTOMERGE_SUFFIX
 
 BRANCH_MAPPING = branch_mapper
 

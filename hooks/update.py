@@ -48,18 +48,10 @@ logging.basicConfig(level=logging.INFO)
 Set do ``DEBUG`` for debug info, or to ``ERROR`` to get error conditions only.
 """
 
-AUTOMERGE_SUFFIX = "-automerge"
-
-FORCE_WORKING_DIR = None
-"""
-You may override working copy by setting this to a path
-"""
-
-CAN_GUESS_GIT_WORK_TREE = True
-"""
-If false we will not quess working tree directory, so either set ``GIT_WORK_TREE``
-envvar or ``FORCE_WORKING_DIR`` python variable.
-"""
+from _hook_config import (
+    SHARED_AUTOMERGE_SUFFIX, UPDATE_CAN_GUESS_GIT_WORK_TREE,
+    UPDATE_FORCE_WORKING_DIR
+)
 
 
 def get_working_copy_dir():
@@ -67,13 +59,13 @@ def get_working_copy_dir():
     Tries to guess and returns working copy directory.
     """
 
-    if FORCE_WORKING_DIR:
-        return FORCE_WORKING_DIR
+    if UPDATE_FORCE_WORKING_DIR:
+        return UPDATE_FORCE_WORKING_DIR
 
     working_copy = os.environ.get("GIT_WORK_TREE", None)
     if working_copy is not None:
         return working_copy
-    if not CAN_GUESS_GIT_WORK_TREE:
+    if not UPDATE_CAN_GUESS_GIT_WORK_TREE:
         logging.error("Can't quess working copy dir and 'GIT_WORK_TREE' was "
                       "not set")
         sys.exit(1)
@@ -106,7 +98,7 @@ def checked_out_branch_is_valid(pushed_branch):
     Check whether checked out branch mathes branch we are pushing to.
 
     """
-    pushed_branch_sans_automerge = pushed_branch[:-len(AUTOMERGE_SUFFIX)]
+    pushed_branch_sans_automerge = pushed_branch[:-len(SHARED_AUTOMERGE_SUFFIX)]
     checked_out_branch = get_checked_out_branch()
 
     if checked_out_branch != pushed_branch_sans_automerge:
@@ -176,7 +168,7 @@ def validate(pushed_branch):
         sys.exit(1)
 
     logging.debug("Updating branch %s", pushed_branch)
-    if not pushed_branch.endswith(AUTOMERGE_SUFFIX):
+    if not pushed_branch.endswith(SHARED_AUTOMERGE_SUFFIX):
         logging.debug("Branch has no automerge suffix, will not automatically merge")
         sys.exit(0)
 

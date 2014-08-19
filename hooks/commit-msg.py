@@ -6,11 +6,8 @@ import os, sys, logging, re, codecs
 
 logging.basicConfig(level=logging.ERROR)
 
-MIN_COMMIT_LENGTH = 15
+from _hook_config import COMMIT_MSG_MIN_LENGTH, COMMIT_MSG_REQUIRED_REGEXPS
 
-REQUIRED_REGEXPS = [
-    'KK-\d+'
-]
 
 def main():
     file_path = sys.argv[1]
@@ -18,11 +15,11 @@ def main():
         lines = map(lambda x: x.strip(), f)
         non_comment_lines = filter(lambda x: x and x[0] != '#', lines)
         commit = "".join(non_comment_lines)
-        if MIN_COMMIT_LENGTH and len(commit) < MIN_COMMIT_LENGTH:
+        if COMMIT_MSG_MIN_LENGTH and COMMIT_MSG_MIN_LENGTH > 0 and len(commit) < COMMIT_MSG_MIN_LENGTH:
             logging.error("Commit message to short")
             sys.exit(1)
-        if REQUIRED_REGEXPS:
-            for regexp in REQUIRED_REGEXPS:
+        if COMMIT_MSG_REQUIRED_REGEXPS:
+            for regexp in COMMIT_MSG_REQUIRED_REGEXPS:
                 if not re.findall(regexp, commit):
                     logging.error("Commit should contain pattern %s", regexp)
                     sys.exit(1)
