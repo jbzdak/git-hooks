@@ -9,9 +9,10 @@ except ImportError:
     from configparser import ConfigParser, NoSectionError, NoOptionError
 
 
-DIRNAME = os.path.dirname(__name__)
+DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
 cp = ConfigParser()
+print(os.path.join(DIRNAME, "_hook_config.ini"))
 cp.read(os.path.join(DIRNAME, "_hook_config.ini"))
 
 _NO_FALLBACK = object()
@@ -57,3 +58,5 @@ COMMIT_MSG_REQUIRED_REGEXPS = json.loads(get_fallback_cp(
     cp, 'commit-msg', 'required-regexps', fallback='[]'))
 
 PRE_COMMMIT_FORBIDDEN_BRANCHES = get_comma_separated_list("pre-commit", 'forbid-commits-to', ',')
+
+print(PRE_COMMMIT_FORBIDDEN_BRANCHES)
