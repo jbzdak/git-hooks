@@ -21,11 +21,14 @@ def get_checked_out_branch():
     """
     :return: String with currently checked out branch
     """
-    return subprocess.check_output("git rev-parse --symbolic-full-name --abbrev-ref HEAD".split()).strip()
+    return subprocess.check_output("git rev-parse --symbolic-full-name --abbrev-ref HEAD".split()).decode("utf-8").strip()
 
 
 def get_list_of_remotes():
-    return map(str.strip, subprocess.check_output("git remote".split()).split())
+    return [
+        x.decode('utf-8').strip()
+        for x in subprocess.check_output("git remote".split()).split()
+    ]
 
 
 def main():
