@@ -30,6 +30,9 @@ def get_list_of_remotes():
 
 def main():
 
+    logging.debug("Config: SHARED_AUTOMERGE_SUFFIX:%s", SHARED_AUTOMERGE_SUFFIX)
+    logging.debug("Config: POST_COMMIT_REMOTES_TO_UPDATE:%s", POST_COMMIT_REMOTES_TO_UPDATE)
+
     current_branch = get_checked_out_branch()
     remotes = get_list_of_remotes()
 

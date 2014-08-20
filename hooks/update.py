@@ -115,7 +115,7 @@ def is_this_repo_bare():
         return True
     if result == "false":
         return False
-    raise ValueError("Can't guess whether this repository is bare")
+    raise ValueError("Can't guess whether this repository is bare {}".format(result))
 
 
 def git_subprocess(args):

@@ -2,6 +2,7 @@
 import os
 
 import json
+import sys
 
 try:
     from ConfigParser import ConfigParser, NoSectionError, NoOptionError
@@ -13,7 +14,10 @@ DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
 cp = ConfigParser()
 print(os.path.join(DIRNAME, "_hook_config.ini"))
-cp.read(os.path.join(DIRNAME, "_hook_config.ini"))
+
+if not cp.read(os.path.join(DIRNAME, "_hook_config.ini")):
+    print("Couln't read config file")
+    sys.exit(3)
 
 _NO_FALLBACK = object()
 
@@ -49,7 +53,7 @@ def get_comma_separated_list(section, key, fallback):
     splitted = initial.split(',')
     return [s for s in splitted if len(s.strip()) > 0]
 
-POST_COMMIT_REMOTES_TO_UPDATE = get_comma_separated_list("update", 'remotes-to-update', 'origin,')
+POST_COMMIT_REMOTES_TO_UPDATE = get_comma_separated_list("post-commit", 'remotes-to-update', 'origin,')
 
 COMMIT_MSG_MIN_LENGTH = get_fallback_cp(cp, 'commit-msg', 'min-commit-length',
                                         fallback=15, method=ConfigParser.getint)
