@@ -128,7 +128,7 @@ def git_subprocess(args):
 
     new_env = dict(os.environ)
     new_env["GIT_DIR"] = os.path.abspath(os.environ['GIT_DIR'])
-    return subprocess.check_output(args, cwd=new_cwd, env=new_env)
+    return subprocess.check_output(args, cwd=new_cwd, env=new_env).decode("utf-8")
 
 
 def get_checked_out_branch():
