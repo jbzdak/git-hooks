@@ -119,7 +119,7 @@ def main():
 
     dest_config = os.path.join(dest_dir, "_hook_config.ini")
 
-    if not os.path.exists(dest_dir):
+    if not os.path.exists(dest_config):
         shutil.copy(config, dest_config)
     else:
         logging.info("Config file exits will not override")
