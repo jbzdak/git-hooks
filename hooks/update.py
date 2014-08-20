@@ -110,7 +110,7 @@ def is_this_repo_bare():
     """
     :return: True if this repository is bare, False otherwise.
     """
-    result = subprocess.check_output("git rev-parse --is-bare-repository".split()).strip()
+    result = subprocess.check_output("git rev-parse --is-bare-repository".split()).strip().decode('utf-8')
     if result == "true":
         return True
     if result == "false":
